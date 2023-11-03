@@ -21,6 +21,18 @@ const RecursoSchema = mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    fchDesdeFalla: {
+        type: Date,
+        default: Date.now()
+    },
+    descripcionFalla: {
+        type: String,
+        require: false
+    },
+    asignadoA: {
+        type: Number,
+        require: false
+    }
 
 });
 
