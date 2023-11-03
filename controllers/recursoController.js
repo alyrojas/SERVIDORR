@@ -108,6 +108,7 @@ exports.getRecursoFiltro = async (req, res) => {
         if(filtros.modelo) {
             mapFiltros.modelo = { $regex: filtros.modelo }
         }
+        mapFiltros.estatus = "Sin Problemas";
         const retorno = await Recurso.find(mapFiltros);
         console.info(retorno)
         res.send(retorno)
@@ -141,7 +142,7 @@ exports.getRecursoPorEmpleado = async (req, res) => {
     try {
         const idEmpleado = req.query.idEmpleado;
         console.info('filtro por idEmpleado: ' + idEmpleado)
-        const retorno = await Recurso.find();
+        const retorno = await Recurso.find({estatus: "Sin Problemas"});
         console.info(retorno)
         res.send(retorno)
     } catch(error) {
@@ -180,8 +181,10 @@ exports.reportarFallas = async (req, res) => {
             res.status(404).json({ msg: 'No existe' })
         }
 
+        vrecurso.asignadoA = null;
         vrecurso.descripcionFalla = requestBody.descripcion;
         vrecurso.fchDesdeFalla = requestBody.fchDesde;
+        vrecurso.estatus = "Con Problemas";
         
         vrecurso = await Recurso.findOneAndUpdate({ _id: vrecurso._id },vrecurso, { new: true} )
         res.send({mensaje: 'Actualizado correctamente'});
